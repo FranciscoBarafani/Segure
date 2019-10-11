@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Text, Share, Linking } from "react-native";
+import { StyleSheet, View, ScrollView, Linking } from "react-native";
 import { Button, CheckBox } from "react-native-elements";
 import t from "tcomb-form-native";
 
@@ -49,7 +49,7 @@ export default class StartTripScreen extends Component {
   //Sending Message
   sendMessage = value => {
     if (value) {
-      const mobile = 5493516133529;
+      const mobile = this.props.navigation.state.params.emergencyContact.number;
       const message = this.renderMessage(
         value.address,
         value.arrival,
@@ -78,9 +78,16 @@ export default class StartTripScreen extends Component {
   };
 
   render() {
+    const transportMethods = t.enums({
+      F: "A pie",
+      T: "Taxi",
+      P: "Omnibus",
+      V: "Auto Privado"
+    });
     //Form Structure
     const TripFormStruct = t.struct({
       address: t.String,
+      transport: transportMethods,
       arrival: t.maybe(t.Date),
       knowArrival: t.Boolean
     });
@@ -91,6 +98,10 @@ export default class StartTripScreen extends Component {
           placeholder: "Direccion",
           label: "A donde vas?",
           error: "Ingresa una direccion"
+        },
+        transport: {
+          placeholder: "Metodo de transporte",
+          label: "En que vas?"
         },
         arrival: {
           placeholder: "Hora de llegada",
@@ -107,7 +118,7 @@ export default class StartTripScreen extends Component {
     };
 
     return (
-      <View style={styles.viewBody}>
+      <ScrollView style={styles.viewBody}>
         <View style={styles.formStyle}>
           <Form ref="form" type={TripFormStruct} options={TripFormOptions} />
         </View>
@@ -119,7 +130,7 @@ export default class StartTripScreen extends Component {
             onPress={() => this.sendMessage(this.refs.form.getValue())}
           />
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }

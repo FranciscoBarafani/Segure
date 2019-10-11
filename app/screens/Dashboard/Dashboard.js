@@ -15,6 +15,7 @@ export default class DashboardScreen extends Component {
     this.renderEmergencyContactInfo();
   }
 
+  //Gets the emergency contact that is stored in the Local phone storage and sets it in the state
   getEmergencyContact = async () => {
     var emergencyContact = await AsyncStorage.getItem("emergencyContact");
     var emergencyContactInfo = JSON.parse(emergencyContact);
@@ -22,7 +23,7 @@ export default class DashboardScreen extends Component {
       emergencyContact: emergencyContactInfo
     });
   };
-
+  //This functions calls another function on load
   renderEmergencyContactInfo = async () => {
     await this.getEmergencyContact();
   };

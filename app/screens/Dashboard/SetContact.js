@@ -17,24 +17,52 @@ export default class SetContactScreen extends Component {
     super(props);
     this.state = {
       contacts: null,
-      isLoading: true
+      isLoading: true,
+      chosenContact: null
     };
   }
-
   componentDidMount() {
     this.getContacts();
+    this.getChosenContact();
   }
-  //Set emergency contact
+  //This functions sets the new emergency contact
   setEmergencyContact = newContact => {
     const contact = {
       name: newContact.name,
       number: newContact.phoneNumbers[0].number
     };
     AsyncStorage.setItem("emergencyContact", JSON.stringify(contact));
+    //The function belows starts the renderEmergencyContactInfo function that is on
+    //Dashboard component, this one is brought through parameters when using navigation.
     this.props.navigation.state.params.renderEmergencyContactInfo();
     this.props.navigation.goBack();
   };
-
+  //This functions renders the chosen contact information to let the user know which one is already picked
+  renderChosenContactInfo = () => {
+    if (this.state.chosenContact) {
+      return (
+        <View>
+          <Text style={styles.chosenContactText}>Contacto Elegido</Text>
+          <Text style={styles.chosenContactInfo}>
+            {this.state.chosenContact.name}
+          </Text>
+          <Text style={styles.chosenContactInfo}>
+            {this.state.chosenContact.number}
+          </Text>
+        </View>
+      );
+    } else {
+      return <Text>Cargando contacto</Text>;
+    }
+  };
+  //This functions get the chosen contact and loads it into the component's state
+  getChosenContact = async () => {
+    var chosenContact = await AsyncStorage.getItem("emergencyContact");
+    var chosenContactInfo = JSON.parse(chosenContact);
+    this.setState({
+      chosenContact: chosenContactInfo
+    });
+  };
   //This function loads all contacts using Expo Contacts
   getContacts = async () => {
     const { data } = await Contacts.getContactsAsync({
@@ -87,6 +115,7 @@ export default class SetContactScreen extends Component {
     const { contacts, isLoading } = this.state;
     return (
       <ScrollView style={styles.viewBody}>
+        {this.renderChosenContactInfo()}
         {this.renderListItem(contacts)}
         <Overlay
           overlayStyle={styles.overlayLoading}
@@ -106,7 +135,6 @@ export default class SetContactScreen extends Component {
 
 const styles = StyleSheet.create({
   viewBody: {
-    flex: 1,
     margin: 20
   },
   overlayLoading: {
@@ -117,5 +145,12 @@ const styles = StyleSheet.create({
     color: "#00a680",
     marginBottom: 20,
     fontSize: 20
+  },
+  chosenContactText: {
+    fontWeight: "bold",
+    fontSize: 18
+  },
+  chosenContactInfo: {
+    fontSize: 16
   }
 });

@@ -64,7 +64,9 @@ export default class DashboardMenu extends Component {
           containerStyle={styles.startTripButtonContainer}
           title="Comienzo mi viaje"
           onPress={() => {
-            this.props.navigation.navigate("StartTrip");
+            this.props.navigation.navigate("StartTrip", {
+              emergencyContact: this.props.emergencyContact
+            });
           }}
           icon={
             <Icon
