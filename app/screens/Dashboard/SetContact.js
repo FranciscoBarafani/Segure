@@ -4,14 +4,17 @@ import {
   View,
   ScrollView,
   ActivityIndicator,
-  Text
+  Text,
+  Alert,
+  AsyncStorage
 } from "react-native";
 import { ListItem, Icon, Overlay } from "react-native-elements";
 import * as Contacts from "expo-contacts";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default class SetContactScreen extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       contacts: null,
       isLoading: true
@@ -21,6 +24,17 @@ export default class SetContactScreen extends Component {
   componentDidMount() {
     this.getContacts();
   }
+  //Set emergency contact
+  setEmergencyContact = newContact => {
+    const contact = {
+      name: newContact.name,
+      number: newContact.phoneNumbers[0].number
+    };
+    AsyncStorage.setItem("emergencyContact", JSON.stringify(contact));
+    this.props.navigation.state.params.renderEmergencyContactInfo();
+    this.props.navigation.goBack();
+  };
+
   //This function loads all contacts using Expo Contacts
   getContacts = async () => {
     const { data } = await Contacts.getContactsAsync({
@@ -35,19 +49,36 @@ export default class SetContactScreen extends Component {
   renderListItem = contacts => {
     if (!this.state.isLoading) {
       return contacts.map((d, i) => (
-        <ListItem
+        <TouchableOpacity
           key={i}
-          title={d.name}
-          leftIcon={
-            <Icon
-              type="material-community"
-              name="account-circle"
-              size={40}
-              color="#00a680"
-            />
+          onPress={() =>
+            Alert.alert(
+              "Elegir Contacto",
+              "Quieres elegir a " + d.name + " como tu contacto de emergencia?",
+              [
+                {
+                  text: "Cancelar",
+                  style: "cancel"
+                },
+                { text: "Si", onPress: () => this.setEmergencyContact(d) }
+              ]
+            )
           }
-          bottomDivider
-        />
+        >
+          <ListItem
+            key={i}
+            title={d.name}
+            leftIcon={
+              <Icon
+                type="material-community"
+                name="account-circle"
+                size={40}
+                color="#00a680"
+              />
+            }
+            bottomDivider
+          />
+        </TouchableOpacity>
       ));
     }
   };

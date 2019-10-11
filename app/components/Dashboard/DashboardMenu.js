@@ -18,11 +18,10 @@ export default class DashboardMenu extends Component {
       loading: false
     };
   }
-
   //When pressing Arrived Safely
   arrivedSafe = () => {
     const message = "Llegue sin problemas, gracias por estar al tanto!";
-    const mobile = 5493516133529;
+    const mobile = this.props.emergencyContact.number;
     let url = "whatsapp://send?text=" + message + "&phone=" + mobile;
     Linking.openURL(url)
       .then(data => {
@@ -35,7 +34,7 @@ export default class DashboardMenu extends Component {
 
   //When pressing Im in Danger
   sendAlert = () => {
-    const mobile = 5493516133529;
+    const mobile = this.props.emergencyContact.number;
     this.setState({ loading: true });
     navigator.geolocation.getCurrentPosition(position => {
       const message =
