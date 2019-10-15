@@ -1,7 +1,22 @@
 import React, { Component } from "react";
-import { StyleSheet, View, ScrollView, Linking } from "react-native";
-import { Button, CheckBox } from "react-native-elements";
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  Linking,
+  Text,
+  ActivityIndicator
+} from "react-native";
+import { Button, ButtonGroup, Icon, Overlay } from "react-native-elements";
 import t from "tcomb-form-native";
+//Forms Import
+import OnFootForm from "../../components/Forms/OnFootForm";
+import OnBusForm from "../../components/Forms/OnBusForm";
+import OnCarForm from "../../components/Forms/OnCarForm";
+import OnTaxiForm from "../../components/Forms/OnTaxiForm";
+
+//TODO , add a function that changes formOptions and Struct when Index changes, create a render function f
+//for the tcomb form native
 
 const Form = t.form.Form;
 
@@ -9,127 +24,127 @@ export default class StartTripScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      selectedIndex: 0,
       latitude: 0,
       longitude: 0,
-      address: ""
+      address: "",
+      formOptions: null,
+      formStruct: null,
+      isLoading: true
     };
+    this.updateIndex = this.updateIndex.bind(this);
   }
-
   componentDidMount() {
     this.getCurrentLocation();
   }
-  //Message Rendering
-  renderMessage = (address, arrivalTime, knowArrival) => {
-    if (!knowArrival) {
-      const message =
-        "Hola!Comienzo mi camino hacia " +
-        `${address}` +
-        ", probablemente llegue a las: " +
-        `${arrivalTime.getHours()}:` +
-        `${arrivalTime.getMinutes()}` +
-        " y mi ubacion actual es " +
-        "http://maps.google.com/maps?saddr=" +
-        this.state.latitude +
-        "," +
-        this.state.longitude;
-      return message;
-    } else {
-      const message =
-        "Hola!Comienzo mi camino hacia " +
-        `${address}` +
-        ", no se a que hora llegaré y" +
-        " mi ubacion actual es " +
-        "http://maps.google.com/maps?saddr=" +
-        this.state.latitude +
-        "," +
-        this.state.longitude;
-      return message;
-    }
-  };
-  //Sending Message
-  sendMessage = value => {
-    if (value) {
-      const mobile = this.props.navigation.state.params.emergencyContact.number;
-      const message = this.renderMessage(
-        value.address,
-        value.arrival,
-        value.knowArrival
-      );
-      let url = "whatsapp://send?text=" + message + "&phone=" + mobile;
-      Linking.openURL(url)
-        .then(data => {
-          console.log("WhatsApp Abierto");
-        })
-        .catch(() => {
-          alert("Whatsapp no esta instalado en este dispositivo");
-        });
-    }
-  };
   //Geolocation
-  getCurrentLocation = () => {
-    navigator.geolocation.getCurrentPosition(position => {
+  getCurrentLocation = async () => {
+    await navigator.geolocation.getCurrentPosition(position => {
       this.setState({
         latitude: position.coords.latitude,
-        longitude: position.coords.longitude
+        longitude: position.coords.longitude,
+        isLoading: false
       });
     }),
       error => alert(error.message),
       { enableHighAccuracy: true, timeout: 20000, maximumAgre: 1000 };
   };
+  //Index updating for ButtonGroup component
+  updateIndex(selectedIndex) {
+    this.setState({ selectedIndex });
+  }
+  //Buttons for index
+  onFootButton = () => {
+    return (
+      <Icon type="material-community" name="walk" size={25} color="grey" />
+    );
+  };
+  onBusButton = () => {
+    return <Icon type="material-community" name="bus" size={25} color="grey" />;
+  };
+  onCarButton = () => {
+    return <Icon type="material-community" name="car" size={25} color="grey" />;
+  };
+  onTaxiButton = () => {
+    return (
+      <Icon type="material-community" name="taxi" size={25} color="grey" />
+    );
+  };
+  //Form Rendering Function, returns form component based on index selection
+  renderForm = () => {
+    if (this.state.selectedIndex == 0) {
+      return <OnFootForm ref="form" />;
+    }
+    if (this.state.selectedIndex == 1) {
+      return <OnBusForm ref="form" />;
+    }
+    if (this.state.selectedIndex == 2) {
+      return <OnCarForm ref="form" />;
+    }
+    if (this.state.selectedIndex == 3) {
+      return <OnTaxiForm ref="form" />;
+    }
+  };
+  //Sending Message
+  sendMessage = () => {
+    const mobile = this.props.navigation.state.params.emergencyContact.number;
+    const message = this.refs.form.renderMessage(
+      this.state.latitude,
+      this.state.longitude
+    );
+    let url = "whatsapp://send?text=" + message + "&phone=" + mobile;
+    Linking.openURL(url)
+      .then(data => {
+        console.log("WhatsApp Abierto");
+      })
+      .catch(() => {
+        alert("Whatsapp no esta instalado en este dispositivo");
+      });
+  };
 
   render() {
-    const transportMethods = t.enums({
-      F: "A pie",
-      T: "Taxi",
-      P: "Omnibus",
-      V: "Auto Privado"
-    });
-    //Form Structure
-    const TripFormStruct = t.struct({
-      address: t.String,
-      transport: transportMethods,
-      arrival: t.maybe(t.Date),
-      knowArrival: t.Boolean
-    });
-    //Form Options
-    const TripFormOptions = {
-      fields: {
-        address: {
-          placeholder: "Direccion",
-          label: "A donde vas?",
-          error: "Ingresa una direccion"
-        },
-        transport: {
-          placeholder: "Metodo de transporte",
-          label: "En que vas?"
-        },
-        arrival: {
-          placeholder: "Hora de llegada",
-          label: "A que hora llegas?",
-          minuteInterval: 10,
-          mode: "time",
-          error:
-            "Debes ingresar un horario o tildar la opcion si no sabes tu demora"
-        },
-        knowArrival: {
-          label: "No se a que hora llego"
-        }
-      }
-    };
+    const { isLoading } = this.state;
+    //Index for ButtonGroup Structure
+    const buttons = [
+      { element: this.onFootButton },
+      { element: this.onBusButton },
+      { element: this.onCarButton },
+      { element: this.onTaxiButton }
+    ];
+    const { selectedIndex } = this.state;
 
     return (
       <ScrollView style={styles.viewBody}>
-        <View style={styles.formStyle}>
-          <Form ref="form" type={TripFormStruct} options={TripFormOptions} />
-        </View>
+        <Text style={styles.transportMethodStyleText}>
+          Metodo de Transporte
+        </Text>
+        <ButtonGroup
+          onPress={this.updateIndex}
+          selectedIndex={selectedIndex}
+          buttons={buttons}
+          containerStyle={{ height: 50 }}
+          selectedButtonStyle={styles.buttonGroupSelectedStyle}
+        />
+        <View style={styles.formStyle}>{this.renderForm()}</View>
         <View style={styles.buttonViewStyle}>
           <Button
             buttonStyle={styles.buttonStyle}
             containerStyle={styles.buttonContainerStyle}
             title="Comenzar Viaje"
-            onPress={() => this.sendMessage(this.refs.form.getValue())}
+            onPress={() => this.sendMessage()}
           />
         </View>
+        <Overlay
+          overlayStyle={styles.overlayLoading}
+          isVisible={isLoading}
+          width="auto"
+          height="auto"
+        >
+          <View>
+            <Text style={styles.overlayLoadingText}>Cargando Ubicacion</Text>
+            <ActivityIndicator size="large" color="#00a680" />
+          </View>
+        </Overlay>
       </ScrollView>
     );
   }
@@ -140,7 +155,8 @@ const styles = StyleSheet.create({
   },
   formStyle: {
     alignContent: "center",
-    padding: 40
+    padding: 40,
+    paddingTop: 20
   },
   buttonStyle: {
     backgroundColor: "#00a680"
@@ -159,6 +175,26 @@ const styles = StyleSheet.create({
   },
   delayText: {
     fontWeight: "bold",
+    fontSize: 20
+  },
+  onFootButtonStyle: {
+    backgroundColor: "white"
+  },
+  buttonGroupSelectedStyle: {
+    backgroundColor: "#00a680"
+  },
+  transportMethodStyleText: {
+    fontSize: 18,
+    textAlign: "center",
+    marginTop: 10
+  },
+  overlayLoading: {
+    padding: 20,
+    borderRadius: 10
+  },
+  overlayLoadingText: {
+    color: "#00a680",
+    marginBottom: 20,
     fontSize: 20
   }
 });
