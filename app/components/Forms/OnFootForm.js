@@ -16,8 +16,8 @@ export default class OnFootForm extends Component {
         "Hola!Comienzo mi camino hacia " +
         `${value.address}` +
         ", probablemente llegue a las: " +
-        `${value.arrivalTime.getHours()}:` +
-        `${value.arrivalTime.getMinutes()}` +
+        `${value.arrival.getHours()}:` +
+        `${value.arrival.getMinutes()}` +
         " y mi ubacion actual es " +
         "http://maps.google.com/maps?saddr=" +
         latitude +
@@ -51,7 +51,8 @@ export default class OnFootForm extends Component {
         address: {
           placeholder: "Direccion",
           label: "A donde vas?",
-          error: "Ingresa una direccion"
+          error: "Ingresa una direccion",
+          maxLength: 50
         },
         arrival: {
           placeholder: "Hora de llegada",

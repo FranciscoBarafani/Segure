@@ -16,8 +16,8 @@ export default class OnCarForm extends Component {
         " voy en el auto con la patente " +
         `${value.licensePlate} ` +
         ", probablemente llegue a las: " +
-        `${value.arrivalTime.getHours()}:` +
-        `${value.arrivalTime.getMinutes()}` +
+        `${value.arrival.getHours()}:` +
+        `${value.arrival.getMinutes()}` +
         " y mi ubacion actual es " +
         "http://maps.google.com/maps?saddr=" +
         latitude +
@@ -53,12 +53,14 @@ export default class OnCarForm extends Component {
         address: {
           placeholder: "Direccion",
           label: "A donde vas?",
-          error: "Ingresa una direccion"
+          error: "Ingresa una direccion",
+          maxLength: 50
         },
         licensePlate: {
           placeholder: "Patente",
           label: "Cual es la patente del vehiculo?",
-          error: "Ingresa una patente"
+          error: "Ingresa una patente",
+          maxLength: 7
         },
         arrival: {
           placeholder: "Hora de llegada",

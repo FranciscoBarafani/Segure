@@ -100,6 +100,7 @@ export default class StartTripScreen extends Component {
       .catch(() => {
         alert("Whatsapp no esta instalado en este dispositivo");
       });
+    this.props.navigation.goBack();
   };
 
   render() {

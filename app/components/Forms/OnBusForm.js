@@ -16,8 +16,8 @@ export default class OnBusForm extends Component {
         " voy a tomar el omnibus " +
         `${value.busLine} ` +
         ", probablemente llegue a las: " +
-        `${value.arrivalTime.getHours()}:` +
-        `${value.arrivalTime.getMinutes()}` +
+        `${value.arrival.getHours()}:` +
+        `${value.arrival.getMinutes()}` +
         " y mi ubacion actual es " +
         "http://maps.google.com/maps?saddr=" +
         latitude +
@@ -53,12 +53,14 @@ export default class OnBusForm extends Component {
         address: {
           placeholder: "Direccion",
           label: "A donde vas?",
-          error: "Ingresa una direccion"
+          error: "Ingresa una direccion",
+          maxLength: 50
         },
         busLine: {
           placeholder: "Linea de Omnibus",
           label: "Que linea tomas?",
-          error: "Ingresa un numero de linea"
+          error: "Ingresa un numero de linea",
+          maxLength: 8
         },
         arrival: {
           placeholder: "Hora de llegada",
