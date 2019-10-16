@@ -6,7 +6,6 @@ import { Icon } from "react-native-elements";
 
 //Main Screens
 import DashboardScreen from "../screens/Dashboard/Dashboard";
-import MyAccountScreen from "../screens/MyAccount/MyAccount";
 //Secondary Screens
 import StartTripScreen from "../screens/Dashboard/StartTrip";
 import SetContactScreen from "../screens/Dashboard/SetContact";
@@ -26,12 +25,6 @@ const DashboardScreenStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({ title: "Elegir Contacto" })
   }
 });
-const MyAccountScreenStack = createStackNavigator({
-  MyAccount: {
-    screen: MyAccountScreen,
-    navigationOptions: ({ navigation }) => ({ title: "Mi Cuenta" })
-  }
-});
 
 //Global Routes // BottomTab Navigator
 
@@ -45,20 +38,6 @@ const RootStack = createBottomTabNavigator(
         tabBarIcon: ({ tintColor }) => (
           <Icon
             name="home-variant-outline"
-            type="material-community"
-            size={22}
-            color={tintColor}
-          />
-        )
-      })
-    },
-    MyAccount: {
-      screen: MyAccountScreenStack,
-      navigationOptions: ({ navigation }) => ({
-        tabBarLabel: "Mi Cuenta",
-        tabBarIcon: ({ tintColor }) => (
-          <Icon
-            name="account-circle-outline"
             type="material-community"
             size={22}
             color={tintColor}

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, AsyncStorage } from "react-native";
+import { Header } from "react-native-elements";
 import DashboardMenu from "../../components/Dashboard/DashboardMenu";
 import ActionButton from "react-native-action-button";
 
@@ -31,6 +32,10 @@ export default class DashboardScreen extends Component {
   render() {
     return (
       <View style={styles.viewBody}>
+        <Header
+          containerStyle={styles.headerStyle}
+          centerComponent={<Text style={styles.headerTextStyle}>SEGURE</Text>}
+        />
         <View style={styles.viewDashboardMenu}>
           <DashboardMenu
             navigation={this.props.navigation}
@@ -58,5 +63,14 @@ const styles = StyleSheet.create({
   viewUserInfo: {},
   viewDashboardMenu: {
     flex: 1
+  },
+  headerStyle: {
+    backgroundColor: "#00a680",
+    height: 50
+  },
+  headerTextStyle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "white"
   }
 });
