@@ -9,34 +9,38 @@ export default class OnTaxiForm extends Component {
   }
   renderMessage = (latitude, longitude) => {
     const value = this.refs.form.getValue();
-    if (!value.knowArrival) {
-      const message =
-        "Hola!Comienzo mi camino hacia " +
-        `${value.address}` +
-        " voy a el taxi con la patente " +
-        `${value.licensePlate} ` +
-        ", probablemente llegue a las: " +
-        `${value.arrival.getHours()}:` +
-        `${value.arrival.getMinutes()}` +
-        " y mi ubacion actual es " +
-        "http://maps.google.com/maps?saddr=" +
-        latitude +
-        "," +
-        longitude;
-      return message;
-    } else {
-      const message =
-        "Hola!Comienzo mi camino hacia " +
-        `${value.address}` +
-        " voy a tomar el taxi con la patente " +
-        `${value.licensePlate} ` +
-        ", no se a que hora llegaré y" +
-        " mi ubacion actual es " +
-        "http://maps.google.com/maps?saddr=" +
-        latitude +
-        "," +
-        longitude;
-      return message;
+    try {
+      if (!value.knowArrival) {
+        const message =
+          "Hola!Comienzo mi camino hacia " +
+          `${value.address}` +
+          " voy a el taxi con la patente " +
+          `${value.licensePlate} ` +
+          ", probablemente llegue a las: " +
+          `${value.arrival.getHours()}:` +
+          `${value.arrival.getMinutes()}` +
+          " y mi ubacion actual es " +
+          "http://maps.google.com/maps?saddr=" +
+          latitude +
+          "," +
+          longitude;
+        return message;
+      } else {
+        const message =
+          "Hola!Comienzo mi camino hacia " +
+          `${value.address}` +
+          " voy a tomar el taxi con la patente " +
+          `${value.licensePlate} ` +
+          ", no se a que hora llegaré y" +
+          " mi ubacion actual es " +
+          "http://maps.google.com/maps?saddr=" +
+          latitude +
+          "," +
+          longitude;
+        return message;
+      }
+    } catch {
+      console.log("Error");
     }
   };
   render() {
