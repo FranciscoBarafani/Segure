@@ -27,15 +27,19 @@ export default class SetContactScreen extends Component {
   }
   //This functions sets the new emergency contact
   setEmergencyContact = newContact => {
-    const contact = {
-      name: newContact.name,
-      number: newContact.phoneNumbers[0].number
-    };
-    AsyncStorage.setItem("emergencyContact", JSON.stringify(contact));
-    //The function belows starts the renderEmergencyContactInfo function that is on
-    //Dashboard component, this one is brought through parameters when using navigation.
-    this.props.navigation.state.params.renderEmergencyContactInfo();
-    this.props.navigation.goBack();
+    try {
+      const contact = {
+        name: newContact.name,
+        number: newContact.phoneNumbers[0].number
+      };
+      AsyncStorage.setItem("emergencyContact", JSON.stringify(contact));
+      //The function belows starts the renderEmergencyContactInfo function that is on
+      //Dashboard component, this one is brought through parameters when using navigation.
+      this.props.navigation.state.params.renderEmergencyContactInfo();
+      this.props.navigation.goBack();
+    } catch {
+      alert("Error al seleccionar contacto, por favor seleccione otro");
+    }
   };
   //This functions renders the chosen contact information to let the user know which one is already picked
   renderChosenContactInfo = () => {

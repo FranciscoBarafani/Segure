@@ -25,7 +25,12 @@ export default class DashboardScreen extends Component {
   };
   //This functions calls another function on load
   renderEmergencyContactInfo = async () => {
-    await this.getEmergencyContact();
+    try {
+      await this.getEmergencyContact();
+    } catch {
+      alert("No has seleccionado tu contacto de emergencia");
+      this.props.navigation.navigate("SetContact");
+    }
   };
 
   render() {
