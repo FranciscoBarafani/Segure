@@ -9,38 +9,34 @@ export default class OnBusForm extends Component {
   }
   renderMessage = (latitude, longitude) => {
     const value = this.refs.form.getValue();
-    try {
-      if (!value.knowArrival) {
-        const message =
-          "Hola!Comienzo mi camino hacia " +
-          `${value.address}` +
-          " voy a tomar el omnibus " +
-          `${value.busLine} ` +
-          ", probablemente llegue a las: " +
-          `${value.arrival.getHours()}:` +
-          `${value.arrival.getMinutes()}` +
-          " y mi ubacion actual es " +
-          "http://maps.google.com/maps?saddr=" +
-          latitude +
-          "," +
-          longitude;
-        return message;
-      } else {
-        const message =
-          "Hola!Comienzo mi camino hacia " +
-          `${value.address}` +
-          " voy a tomar el omnibus " +
-          `${value.busLine} ` +
-          ", no se a que hora llegaré y" +
-          " mi ubacion actual es " +
-          "http://maps.google.com/maps?saddr=" +
-          latitude +
-          "," +
-          longitude;
-        return message;
-      }
-    } catch {
-      console.log("Error");
+    if (!value.knowArrival) {
+      const message =
+        "Hola!Comienzo mi camino hacia " +
+        `${value.address}` +
+        " voy a tomar el omnibus " +
+        `${value.busLine} ` +
+        ", probablemente llegue a las: " +
+        `${value.arrival.getHours()}:` +
+        `${value.arrival.getMinutes()}` +
+        " y mi ubacion actual es " +
+        "http://maps.google.com/maps?saddr=" +
+        latitude +
+        "," +
+        longitude;
+      return message;
+    } else {
+      const message =
+        "Hola!Comienzo mi camino hacia " +
+        `${value.address}` +
+        " voy a tomar el omnibus " +
+        `${value.busLine} ` +
+        ", no se a que hora llegaré y" +
+        " mi ubacion actual es " +
+        "http://maps.google.com/maps?saddr=" +
+        latitude +
+        "," +
+        longitude;
+      return message;
     }
   };
   render() {

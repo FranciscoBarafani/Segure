@@ -88,19 +88,23 @@ export default class StartTripScreen extends Component {
   //Sending Message
   sendMessage = () => {
     const mobile = this.props.navigation.state.params.emergencyContact.number;
-    const message = this.refs.form.renderMessage(
-      this.state.latitude,
-      this.state.longitude
-    );
-    let url = "whatsapp://send?text=" + message + "&phone=" + mobile;
-    Linking.openURL(url)
-      .then(data => {
-        console.log("WhatsApp Abierto");
-      })
-      .catch(() => {
-        alert("Whatsapp no esta instalado en este dispositivo");
-      });
-    this.props.navigation.goBack();
+    try {
+      const message = this.refs.form.renderMessage(
+        this.state.latitude,
+        this.state.longitude
+      );
+      let url = "whatsapp://send?text=" + message + "&phone=" + mobile;
+      Linking.openURL(url)
+        .then(data => {
+          console.log("WhatsApp Abierto");
+        })
+        .catch(() => {
+          alert("Whatsapp no esta instalado en este dispositivo");
+        });
+      this.props.navigation.goBack();
+    } catch {
+      alert("Debes completar los campos");
+    }
   };
 
   render() {
