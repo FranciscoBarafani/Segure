@@ -5,8 +5,8 @@ import {
   ScrollView,
   ActivityIndicator,
   Text,
-  AsyncStorage,
-  Alert
+  Alert,
+  AsyncStorage
 } from "react-native";
 import { ListItem, Icon, Overlay } from "react-native-elements";
 import * as Contacts from "expo-contacts";
