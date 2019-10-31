@@ -71,7 +71,8 @@ export default class OnTaxiForm extends Component {
             "Debes ingresar un horario o tildar la opcion si no sabes tu demora"
         },
         knowArrival: {
-          label: "No se a que hora llego"
+          label: "No se a que hora llego",
+          error: "Si no sabes a que hora llegas debes seleccionar esta opción"
         }
       }
     };

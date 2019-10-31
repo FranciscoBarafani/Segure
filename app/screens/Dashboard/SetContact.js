@@ -69,13 +69,17 @@ export default class SetContactScreen extends Component {
   };
   //This function loads all contacts using Expo Contacts
   getContacts = async () => {
-    const { data } = await Contacts.getContactsAsync({
-      fields: [Contacts.PHONE_NUMBERS]
-    });
-    this.setState({
-      contacts: data,
-      isLoading: false
-    });
+    try {
+      const { data } = await Contacts.getContactsAsync({
+        fields: [Contacts.PHONE_NUMBERS]
+      });
+      this.setState({
+        contacts: data,
+        isLoading: false
+      });
+    } catch {
+      alert("Error al obtener contactos");
+    }
   };
   //This functions renders the contacts list
   renderListItem = contacts => {

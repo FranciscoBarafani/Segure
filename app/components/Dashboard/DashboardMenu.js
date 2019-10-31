@@ -128,10 +128,10 @@ export default class DashboardMenu extends Component {
 const styles = StyleSheet.create({
   viewButtons: {
     alignContent: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     marginLeft: 40,
     marginRight: 40,
-    marginTop: 100
+    marginTop: 30
   },
   startTripButtonContainer: {
     height: 100
