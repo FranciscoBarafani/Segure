@@ -54,16 +54,14 @@ export default class DashboardScreen extends Component {
             emergencyContact={this.state.emergencyContact}
           />
         </View>
-        <View>
-          <ActionButton
-            buttonColor="#00a680"
-            onPress={() => {
-              this.props.navigation.navigate("SetContact", {
-                renderEmergencyContactInfo: this.renderEmergencyContactInfo
-              });
-            }}
-          />
-        </View>
+        <ActionButton
+          buttonColor="#00a680"
+          onPress={() => {
+            this.props.navigation.navigate("SetContact", {
+              renderEmergencyContactInfo: this.renderEmergencyContactInfo
+            });
+          }}
+        />
       </View>
     );
   }

@@ -71,7 +71,8 @@ export default class SetContactScreen extends Component {
   getContacts = async () => {
     try {
       const { data } = await Contacts.getContactsAsync({
-        fields: [Contacts.PHONE_NUMBERS]
+        fields: [Contacts.PHONE_NUMBERS],
+        sort: Contacts.Fields.LastName
       });
       this.setState({
         contacts: data,
