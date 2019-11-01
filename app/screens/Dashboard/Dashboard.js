@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, View, AsyncStorage } from "react-native";
-import { Avatar } from "react-native-elements";
+import { Avatar, Icon } from "react-native-elements";
 import DashboardMenu from "../../components/Dashboard/DashboardMenu";
 import ActionButton from "react-native-action-button";
 
@@ -54,14 +54,19 @@ export default class DashboardScreen extends Component {
             emergencyContact={this.state.emergencyContact}
           />
         </View>
-        <ActionButton
-          buttonColor="#00a680"
-          onPress={() => {
-            this.props.navigation.navigate("SetContact", {
-              renderEmergencyContactInfo: this.renderEmergencyContactInfo
-            });
-          }}
-        />
+        <ActionButton buttonColor="#00a680">
+          <ActionButton.Item
+            buttonColor="#00a680"
+            title="Elegir Contacto de Emergencia"
+            onPress={() => {
+              this.props.navigation.navigate("SetContact", {
+                renderEmergencyContactInfo: this.renderEmergencyContactInfo
+              });
+            }}
+          >
+            <Icon name="account-plus" type="material-community" color="white" />
+          </ActionButton.Item>
+        </ActionButton>
       </View>
     );
   }

@@ -77,6 +77,7 @@ export default class DashboardMenu extends Component {
             />
           }
         />
+
         <Button
           buttonStyle={styles.finishTripButton}
           containerStyle={styles.finishTripButtonContainer}

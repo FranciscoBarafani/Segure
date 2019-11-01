@@ -34,12 +34,12 @@ const RootStack = createBottomTabNavigator(
     Dashboard: {
       screen: DashboardScreenStack,
       navigationOptions: ({ navigation }) => ({
-        tabBarLabel: "Tablero",
+        tabBarLabel: "Segure",
         tabBarIcon: ({ tintColor }) => (
           <Icon
-            name="home-variant-outline"
+            name="account-multiple-outline"
             type="material-community"
-            size={22}
+            size={40}
             color={tintColor}
           />
         )
