@@ -1,2 +1,0 @@
-# Segure
-Anti Panic Button
