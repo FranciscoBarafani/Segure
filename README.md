@@ -3,6 +3,9 @@
 Anti panic button developed for persons that go out alone, to keep them safe and their contacts adviced. It basically sends
 pre rendered messages to whatsapp contacts based on your action... starting a trip, arriving or when you are at risk. 
 
+![alt text](https://github.com/FranciscoBarafani/Segure/blob/master/assets/SegureFlyer.png)
+
+
 ## Project Status
 
 This project stills under development. 
